@@ -1,3 +1,7 @@
-/vendor/
-/logs/*
-!/logs/README.md
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+clipboard.geany
+_old/
