@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 
 class ClipboardController extends Controller
 {
@@ -34,32 +35,54 @@ class ClipboardController extends Controller
     }
     
     
-    public function postHash($hash) 
+    public function postHash(Request $request, $hash) 
     {
         $hash = $this->sanitizeHash($hash);
-    
-        //TODO: improve this
-        $postValue = $_POST;
-        
+        $postValue = $request->all();
         $storeValue = serialize($postValue);
-        
         Cache::put($hash, $storeValue, 1440);
         
         return response()->json($postValue);
-        
-        
     }
         
         
-    public function getXmlHash() 
+    public function getXmlHash($hash) 
     {
+        $hash = $this->sanitizeHash($hash);
+
+        if (Cache::has($hash)) {
+            $storedValue = Cache::get($hash);
+            $storedValue = unserialize($storedValue);
+            if($storedValue !== false) {
+                $content = view('xml', ['storedValue' => $storedValue]);
+            } else {
+                $content = view('xml', ['storedValue' => ['error' => 'Invalid content']]);
+            }
+        } else {
+            $content = view('xml', ['storedValue' => ['error' => 'Hash not found']]);
+        }
         
+        return response($content, 200)->header('Content-Type', 'text/xml');
     }
     
     
-    public function getTextHash() 
+    public function getRawHash($hash) 
     {
+        $hash = $this->sanitizeHash($hash);
+
+        if (Cache::has($hash)) {
+            $storedValue = Cache::get($hash);
+            $storedValue = unserialize($storedValue);
+            if($storedValue !== false) {
+                $content = view('raw', ['storedValue' => $storedValue]);
+            } else {
+                $content = view('raw', ['storedValue' => ['error' => 'Invalid content']]);
+            }
+        } else {
+            $content = view('raw', ['storedValue' => ['error' => 'Hash not found']]);
+        }
         
+        return $content;
     }
     
     public function getUiHash($hash)
@@ -84,7 +107,7 @@ class ClipboardController extends Controller
     private function sanitizeHash($hash)
     {
         $hash = strtolower($hash);
-        $hash = trim(preg_replace("/[^a-z0-9\-\.]/", '', $hash));
+        $hash = trim(preg_replace("/[^a-z0-9\-\._]/", '', $hash));
         
         return $hash;
     }

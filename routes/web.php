@@ -25,4 +25,4 @@ $app->get('/json/{hash}', 'ClipboardController@getJsonHash');
 
 $app->get('/xml/{hash}', 'ClipboardController@getXmlHash');
 
-$app->get('/text/{hash}', 'ClipboardController@getTextHash');
+$app->get('/raw/{hash}', 'ClipboardController@getRawHash');
