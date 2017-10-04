@@ -37,10 +37,11 @@ class ClipboardController extends Controller
     
     public function postHash(Request $request, $hash) 
     {
+        $cacheTimeout = env("CACHE_TIMEOUT", 1440);
         $hash = $this->sanitizeHash($hash);
         $postValue = $request->all();
         $storeValue = serialize($postValue);
-        Cache::put($hash, $storeValue, 1440);
+        Cache::put($hash, $storeValue, $cacheTimeout);
         
         return response()->json($postValue);
     }
