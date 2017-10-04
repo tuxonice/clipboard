@@ -15,14 +15,18 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->get('/{hash}', 'ClipboardController@getJsonHash');
+$app->group(['middleware' => 'throttle'], function () use ($app) {
+    
+    $app->get('/{hash}', 'ClipboardController@getJsonHash');
 
-$app->post('/{hash}', 'ClipboardController@postHash');
+    $app->post('/{hash}', 'ClipboardController@postHash');
 
-$app->get('/ui/{hash}', 'ClipboardController@getUiHash');
+    $app->get('/ui/{hash}', 'ClipboardController@getUiHash');
 
-$app->get('/json/{hash}', 'ClipboardController@getJsonHash');
+    $app->get('/json/{hash}', 'ClipboardController@getJsonHash');
 
-$app->get('/xml/{hash}', 'ClipboardController@getXmlHash');
+    $app->get('/xml/{hash}', 'ClipboardController@getXmlHash');
 
-$app->get('/raw/{hash}', 'ClipboardController@getRawHash');
+    $app->get('/raw/{hash}', 'ClipboardController@getRawHash');
+    
+});
