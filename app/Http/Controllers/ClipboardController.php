@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class ClipboardController extends Controller
 {
+    
+    protected $cacheTimeout = 1440;
+    
     /**
      * Create a new controller instance.
      *
@@ -14,7 +17,7 @@ class ClipboardController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->cacheTimeout = env("CACHE_TIMEOUT", 1440);
     }
     
     public function getJsonHash($hash) 
@@ -37,11 +40,10 @@ class ClipboardController extends Controller
     
     public function postHash(Request $request, $hash) 
     {
-        $cacheTimeout = env("CACHE_TIMEOUT", 1440);
         $hash = $this->sanitizeHash($hash);
         $postValue = $request->all();
         $storeValue = serialize($postValue);
-        Cache::put($hash, $storeValue, $cacheTimeout);
+        Cache::put($hash, $storeValue, $this->cacheTimeout);
         
         return response()->json($postValue);
     }
@@ -86,21 +88,23 @@ class ClipboardController extends Controller
         return $content;
     }
     
-    public function getUiHash($hash)
+    public function getUiHash($hash = null)
     {
-        $hash = $this->sanitizeHash($hash);
         $storedValue = '';
-        if (Cache::has($hash)) {
-            $storedValue = Cache::get($hash);
-            $storedValue = unserialize($storedValue);
-            if($storedValue !== false && isset($storedValue['input-data'])) {
-                $storedValue = $storedValue['input-data'];
-            } else {
-                $storedValue = '';
+        if (is_null($hash)) {
+            $hash = md5(uniqid());            
+        } else {
+            $hash = $this->sanitizeHash($hash);
+            if (Cache::has($hash)) {
+                $storedValue = Cache::get($hash);
+                $storedValue = unserialize($storedValue);
+                if($storedValue !== false && isset($storedValue['input-data'])) {
+                    $storedValue = $storedValue['input-data'];
+                } else {
+                    $storedValue = '';
+                }
             }
-            
         }
-        
         return view('ui', ['hash' => $hash, 'content' => $storedValue]);
     }
     

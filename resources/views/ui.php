@@ -20,9 +20,9 @@
             <form action="/<?php echo($hash); ?>" method="post">
 				<br/>
                 <div class="form-group">
-                    <label for="input-data">Text area</label>
+                    <label for="input-data">input-data</label>
                     <textarea class="form-control" rows="3" name="input-data" id="input-data"><?php echo($content); ?></textarea>
-                    <p class="help-block">Example block-level help text here.</p>
+                    <p class="help-block">Hash: <?php echo($hash); ?></p>
                 </div>
   
                 <button type="submit" class="btn btn-default">Send</button>

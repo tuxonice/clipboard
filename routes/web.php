@@ -12,17 +12,19 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return 'Pixel Clipboard 0.0.1';
 });
 
 $app->group(['middleware' => 'throttle'], function () use ($app) {
+    
+    $app->get('/ui', 'ClipboardController@getUiHash');
     
     $app->get('/{hash}', 'ClipboardController@getJsonHash');
 
     $app->post('/{hash}', 'ClipboardController@postHash');
 
     $app->get('/ui/{hash}', 'ClipboardController@getUiHash');
-
+    
     $app->get('/json/{hash}', 'ClipboardController@getJsonHash');
 
     $app->get('/xml/{hash}', 'ClipboardController@getXmlHash');
