@@ -11,9 +11,7 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return 'Pixel Clipboard 0.0.1';
-});
+$app->get('/', 'ClipboardController@index');
 
 $app->group(['middleware' => 'throttle'], function () use ($app) {
     

@@ -20,6 +20,11 @@ class ClipboardController extends Controller
         $this->cacheTimeout = env("CACHE_TIMEOUT", 1440);
     }
     
+    public function index(Request $request)
+    {
+        return view('index', ['host' => $request->getSchemeAndHttpHost(), 'cachetimeout' => $this->cacheTimeout]);
+    }
+    
     public function getJsonHash($hash) 
     {
         $hash = $this->sanitizeHash($hash);
@@ -90,29 +95,27 @@ class ClipboardController extends Controller
     
     public function getUiHash($hash = null)
     {
-        $storedValue = '';
+        $storedArray = ['data' => ''];
         if (is_null($hash)) {
             $hash = md5(uniqid());            
         } else {
             $hash = $this->sanitizeHash($hash);
             if (Cache::has($hash)) {
                 $storedValue = Cache::get($hash);
-                $storedValue = unserialize($storedValue);
-                if($storedValue !== false && isset($storedValue['input-data'])) {
-                    $storedValue = $storedValue['input-data'];
-                } else {
-                    $storedValue = '';
+                $storedArray = unserialize($storedValue);
+                if($storedArray == false || !is_array($storedArray)) {
+                    $storedArray = ['data' => ''];
                 }
             }
         }
-        return view('ui', ['hash' => $hash, 'content' => $storedValue]);
+        return view('ui', ['hash' => $hash, 'storedArray' => $storedArray]);
     }
     
     
     private function sanitizeHash($hash)
     {
         $hash = strtolower($hash);
-        $hash = trim(preg_replace("/[^a-z0-9\-\._]/", '', $hash));
+        $hash = trim(preg_replace("/[^a-z0-9:\-\._]/", '', $hash));
         
         return $hash;
     }
