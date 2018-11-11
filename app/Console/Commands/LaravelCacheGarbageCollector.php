@@ -34,8 +34,7 @@ class LaravelCacheGarbageCollector extends Command
             'driver'=>'local',
             'root'=>config('cache.stores.file.path')
         ];
-        var_dump($cacheDisk);
-        
+
         //Config::set('filesystems.disks.fcache',$cacheDisk);
         config(['filesystems.disks.fcache' => $cacheDisk]);
         $expired_file_count = 0;
@@ -57,14 +56,10 @@ class LaravelCacheGarbageCollector extends Command
 
                 // Get the expiration time
                 $expire = substr($contents, 0, 10);
-                //$this->line(time() - $expire);
                 // See if we have expired
                 if(time() >= $expire) {
                     // Delete the file
-                    //$this->line($cachefile);
-                    var_dump(\Storage::disk('fcache')->delete($cachefile));
-                    //$this->line($cacheDisk['root'].'/'.$cachefile);
-                    //unlink($cacheDisk['root'].'/'.$cachefile);
+                    \Storage::disk('fcache')->delete($cachefile);
                     $expired_file_count++;
                 } else {
                     $active_file_count++;
