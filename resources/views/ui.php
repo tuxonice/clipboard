@@ -49,7 +49,7 @@
                 
                 <div class="form-group">
                     <label for="value-01">Value</label>
-                    <textarea class="form-control" rows="3" name="<?php echo($key); ?>" id="<?php echo($key); ?>"><?php echo($value); ?></textarea>
+                    <textarea class="form-control" rows="3" name="<?php echo($key); ?>" id="<?php echo(htmlentities($key)); ?>"><?php echo(htmlentities($value)); ?></textarea>
                 </div>
                 
                 <hr/>
@@ -67,18 +67,5 @@
     <script src="/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/js/ie10-viewport-bug-workaround.js"></script>
-    <script>
-        $(function(){
-            
-                $("#main-form").on('submit', function(){
-                    
-                        
-                });
-                
-            
-        });
-    
-    
-    </script>
   </body>
 </html>

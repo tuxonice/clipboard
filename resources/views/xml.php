@@ -2,6 +2,6 @@
 <root>
 <?php 
 foreach($storedValue as $key=>$value){
-    echo("<$key>$value</$key>"); 
+    echo("<$key>".htmlentities($value)."</$key>"); 
 } ?>
 </root>
