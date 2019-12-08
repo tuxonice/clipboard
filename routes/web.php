@@ -11,22 +11,22 @@
 |
 */
 
-$app->get('/', 'ClipboardController@index');
+$router->get('/', 'ClipboardController@index');
 
-$app->group(['middleware' => 'throttle'], function () use ($app) {
+$router->group(['middleware' => 'throttle'], function () use ($router) {
     
-    $app->get('/ui', 'ClipboardController@getUiHash');
+    $router->get('/ui', 'ClipboardController@getUiHash');
     
-    $app->get('/{hash}', 'ClipboardController@getJsonHash');
+    $router->get('/{hash}', 'ClipboardController@getJsonHash');
 
-    $app->post('/{hash}', 'ClipboardController@postHash');
+    $router->post('/{hash}', 'ClipboardController@postHash');
 
-    $app->get('/ui/{hash}', 'ClipboardController@getUiHash');
+    $router->get('/ui/{hash}', 'ClipboardController@getUiHash');
     
-    $app->get('/json/{hash}', 'ClipboardController@getJsonHash');
+    $router->get('/json/{hash}', 'ClipboardController@getJsonHash');
 
-    $app->get('/xml/{hash}', 'ClipboardController@getXmlHash');
+    $router->get('/xml/{hash}', 'ClipboardController@getXmlHash');
 
-    $app->get('/raw/{hash}', 'ClipboardController@getRawHash');
+    $router->get('/raw/{hash}', 'ClipboardController@getRawHash');
     
 });
