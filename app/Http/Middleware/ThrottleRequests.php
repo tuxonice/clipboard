@@ -32,18 +32,18 @@ class ThrottleRequests
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  int  $maxAttempts
-     * @param  int  $decayMinutes
+     * @param  int  $decaySeconds
      * @return mixed
      */
-    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
+    public function handle($request, Closure $next, $maxAttempts = 60, $decaySeconds = 60)
     {
         $key = $this->resolveRequestSignature($request);
 
-        if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decayMinutes)) {
+        if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decaySeconds)) {
             return $this->buildResponse($key, $maxAttempts);
         }
 
-        $this->limiter->hit($key, $decayMinutes);
+        $this->limiter->hit($key, $decaySeconds);
 
         $response = $next($request);
 
