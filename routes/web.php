@@ -13,7 +13,7 @@
 
 $router->get('/', 'ClipboardController@index');
 
-$router->group(['middleware' => 'throttle'], function () use ($router) {
+$router->group(['middleware' => 'throttle:45,60'], function () use ($router) {
     
     $router->get('/ui', 'ClipboardController@getUiHash');
     
