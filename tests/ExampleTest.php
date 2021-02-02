@@ -14,8 +14,7 @@ class ExampleTest extends TestCase
     {
         $this->get('/');
 
-        $this->assertEquals(
-            $this->app->version(), $this->response->getContent()
-        );
+        $this->assertContains('Clipboard - A simple web storage for text', $this->response->getContent());
+        
     }
 }
