@@ -46,21 +46,21 @@
                 
                 <p><code>[GET] <?php echo($host); ?>/{hash}</code></p>
                 <p>Get content of the clipboard for the hash {hash} in JSON format</p>
-                
+
                 <p><code>[GET] <?php echo($host); ?>/raw/{hash}</code></p>
                 <p>Get content of the clipboard for the hash {hash} in raw format</p>
-                
+
                 <p><code>[GET] <?php echo($host); ?>/xml/{hash}</code></p>
                 <p>Get content of the clipboard for the hash {hash} in XML format</p>
-                
+
                 <h2>2. Hash format</h2>
                 <p>Hash value valid characters: <b>a</b> to <b>z</b>, <b>0</b> to <b>9</b>, <b>:</b>, <b>-</b>, <b>.</b> and <b>_</b></p>
-                
+
                 <h2>3. Limit rate</h2>
                 <p>Endpoint rate limit is 60 requests per minute</p>
 
                 <h2>4. Cache lifetime</h2>
-                <p>The content lifetime is <?php echo($cachetimeout); ?> minutes from the last POST request</p>
+                <p>The content lifetime is <?php echo($cachetimeout); ?> seconds from the last POST request</p>
 
                 <h3>License</h3>
                 <p>
