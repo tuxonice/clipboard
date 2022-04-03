@@ -29,7 +29,7 @@ class ClipboardTest extends TestCase
 
         $response = $this->get('/xml/example');
         $this->assertXmlStringEqualsXmlString(
-            $this->response->getContent(), 
+            $this->response->getContent(),
             '<root><data>Hello World</data></root>'
         );
 

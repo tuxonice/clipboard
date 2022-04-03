@@ -61,15 +61,17 @@ class ClipboardController extends Controller
         if (Cache::has($hash)) {
             $storedValue = Cache::get($hash);
             $storedValue = unserialize($storedValue);
+
             if($storedValue !== false) {
                 $content = view('xml', ['storedValue' => $storedValue]);
-            } else {
-                $content = view('xml', ['storedValue' => ['error' => 'Invalid content']]);
+                return response($content, 200)->header('Content-Type', 'text/xml');
             }
-        } else {
-            $content = view('xml', ['storedValue' => ['error' => 'Hash not found']]);
+
+            $content = view('xml', ['storedValue' => ['error' => 'Invalid content']]);
+            return response($content, 200)->header('Content-Type', 'text/xml');
         }
-        
+
+        $content = view('xml', ['storedValue' => ['error' => 'Hash not found']]);
         return response($content, 200)->header('Content-Type', 'text/xml');
     }
     
