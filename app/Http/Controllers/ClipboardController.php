@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ClipboardController extends Controller
 {
     
-    protected $cacheTimeout = 1440;
+    protected int $cacheTimeout = 1440;
     
     /**
      * Create a new controller instance.
@@ -20,7 +21,7 @@ class ClipboardController extends Controller
         $this->cacheTimeout = env("CACHE_TIMEOUT", 1440);
     }
     
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('index', ['host' => $request->getSchemeAndHttpHost(), 'cachetimeout' => $this->cacheTimeout]);
     }
@@ -47,14 +48,20 @@ class ClipboardController extends Controller
     {
         $hash = $this->sanitizeHash($hash);
         $postValue = $request->all();
-        $storeValue = serialize($postValue);
+
+        $cleanData = [];
+        foreach ($postValue as $key => $value) {
+            $cleanData[$this->sanitizeKey($key)] = $this->sanitizeContent($value);
+        }
+
+        $storeValue = serialize($cleanData);
         Cache::put($hash, $storeValue, $this->cacheTimeout);
         
-        return response()->json($postValue);
+        return response()->json($cleanData);
     }
         
         
-    public function getXmlHash($hash) 
+    public function getXmlHash($hash)
     {
         $hash = $this->sanitizeHash($hash);
 
@@ -74,7 +81,7 @@ class ClipboardController extends Controller
     }
     
     
-    public function getRawHash($hash) 
+    public function getRawHash($hash): View
     {
         $hash = $this->sanitizeHash($hash);
 
@@ -93,7 +100,7 @@ class ClipboardController extends Controller
         return $content;
     }
     
-    public function getUiHash($hash = null)
+    public function getUiHash($hash = null): View
     {
         $storedArray = ['data' => ''];
         if (is_null($hash)) {
@@ -110,14 +117,23 @@ class ClipboardController extends Controller
         }
         return view('ui', ['hash' => $hash, 'storedArray' => $storedArray]);
     }
-    
-    
-    private function sanitizeHash($hash)
+
+    private function sanitizeHash(string $hash): string
     {
         $hash = strtolower($hash);
         $hash = trim(preg_replace("/[^a-z0-9:\-\._]/", '', $hash));
         
         return $hash;
+    }
+
+    private function sanitizeKey(string $key): string
+    {
+        return trim(preg_replace("/[^a-zA-Z0-9]/", '', strtolower($key)));
+    }
+
+    private function sanitizeContent(string $content): string
+    {
+        return htmlentities($content);
     }
 
 }
