@@ -41,7 +41,7 @@
                 
                 <div class="form-group">
                     <label for="value-01">Value</label>
-                    <textarea class="form-control" rows="3" name="<?php echo($key); ?>" id="<?php echo(htmlentities($key)); ?>"><?php echo(htmlentities($value)); ?></textarea>
+                    <textarea id="value-01" class="form-control" rows="3" name="<?php echo($key); ?>" id="<?php echo($key); ?>"><?php echo($value); ?></textarea>
                 </div>
                 
                 <hr/>

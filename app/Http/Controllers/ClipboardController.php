@@ -89,32 +89,28 @@ class ClipboardController extends Controller
             $storedValue = Cache::get($hash);
             $storedValue = unserialize($storedValue);
             if($storedValue !== false) {
-                $content = view('raw', ['storedValue' => $storedValue]);
-            } else {
-                $content = view('raw', ['storedValue' => ['error' => 'Invalid content']]);
+                return view('raw', ['storedValue' => $storedValue]);
             }
-        } else {
-            $content = view('raw', ['storedValue' => ['error' => 'Hash not found']]);
+
+            return view('raw', ['storedValue' => ['error' => 'Invalid content']]);
         }
-        
-        return $content;
+
+        return view('raw', ['storedValue' => ['error' => 'Hash not found']]);
     }
     
     public function getUiHash($hash = null): View
     {
         $storedArray = ['data' => ''];
-        if (is_null($hash)) {
-            $hash = md5(uniqid());            
-        } else {
-            $hash = $this->sanitizeHash($hash);
-            if (Cache::has($hash)) {
-                $storedValue = Cache::get($hash);
-                $storedArray = unserialize($storedValue);
-                if($storedArray == false || !is_array($storedArray)) {
-                    $storedArray = ['data' => ''];
-                }
+
+        $hash = $hash === null ? md5(uniqid()) : $this->sanitizeHash($hash);
+        if (Cache::has($hash)) {
+            $storedValue = Cache::get($hash);
+            $storedArray = unserialize($storedValue);
+            if($storedArray === false || !is_array($storedArray)) {
+                $storedArray = ['data' => ''];
             }
         }
+
         return view('ui', ['hash' => $hash, 'storedArray' => $storedArray]);
     }
 
