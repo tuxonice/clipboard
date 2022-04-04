@@ -1,3 +1,5 @@
+![Laravel](https://github.com/tuxonice/clipboard/workflows/tests/badge.svg)
+
 # Clipboard
 
 Clipboard is Lumen project to store values using cache system in REST way.
