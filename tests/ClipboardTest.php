@@ -82,15 +82,13 @@ class ClipboardTest extends TestCase
             ]);
 
         $expectedResult = <<<END
-<html>
+<html lang="en">
 <head>
 <title></title>
 </head>
-</html>
 <body>
-            <h4>data</h4>
-        <p>Hello World</p>
-        
+<h4>data</h4>
+<p>Hello World</p>
 </body>
 </html>
 
@@ -100,5 +98,29 @@ END;
             $this->response->getContent(),
             $expectedResult);
 
+    }
+
+    public function testCanNotGetMoreThan45RequestPerMinute()
+    {
+        $this->json('POST', '/example', ['data' => 'Hello World'])
+            ->seeJson([
+                'data' => 'Hello World',
+            ]);
+
+        for($count = 1; $count <= 45; $count++) {
+            $this->get('/json/example')->assertResponseStatus(200);
+        }
+
+        $this->get('/json/example')->assertResponseStatus(429);
+    }
+
+    public function testCanViewUiInterface()
+    {
+        $this->json('GET', '/ui/example')->assertResponseOk();
+    }
+
+    public function testCanViewHomePage()
+    {
+        $this->json('GET', '/')->assertResponseOk();
     }
 }
