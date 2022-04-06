@@ -82,15 +82,13 @@ class ClipboardTest extends TestCase
             ]);
 
         $expectedResult = <<<END
-<html>
+<html lang="en">
 <head>
 <title></title>
 </head>
-</html>
 <body>
-            <h4>data</h4>
-        <p>Hello World</p>
-        
+<h4>data</h4>
+<p>Hello World</p>
 </body>
 </html>
 
@@ -119,5 +117,10 @@ END;
     public function testCanViewUiInterface()
     {
         $this->json('GET', '/ui/example')->assertResponseOk();
+    }
+
+    public function testCanViewHomePage()
+    {
+        $this->json('GET', '/')->assertResponseOk();
     }
 }

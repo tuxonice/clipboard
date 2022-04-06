@@ -35,22 +35,22 @@
             
             <div class="page-header">
                 <h2>1. How to use</h2>
-                <p><code>[GET] <?php echo($host); ?>/ui</code></p>
+                <p><code>[GET] {{ $host }}/ui</code></p>
                 <p>Clipboard user interface with pre generated hash</p>
                 
-                <p><code>[GET] <?php echo($host); ?>/ui/{hash}</code></p>
+                <p><code>[GET] {{ $host }}/ui/{hash}</code></p>
                 <p>Clipboard user interface with hash</p>
                 
-                <p><code>[POST] <?php echo($host); ?>/{hash}</code></p>
+                <p><code>[POST] {{ $host }}/{hash}</code></p>
                 <p>Post content to clipboard using the hash {hash}</p>
                 
-                <p><code>[GET] <?php echo($host); ?>/{hash}</code></p>
+                <p><code>[GET] {{ $host }}/{hash}</code></p>
                 <p>Get content of the clipboard for the hash {hash} in JSON format</p>
 
-                <p><code>[GET] <?php echo($host); ?>/raw/{hash}</code></p>
+                <p><code>[GET] {{ $host }}/raw/{hash}</code></p>
                 <p>Get content of the clipboard for the hash {hash} in raw format</p>
 
-                <p><code>[GET] <?php echo($host); ?>/xml/{hash}</code></p>
+                <p><code>[GET] {{ $host }}/xml/{hash}</code></p>
                 <p>Get content of the clipboard for the hash {hash} in XML format</p>
 
                 <h2>2. Hash format</h2>
@@ -60,7 +60,7 @@
                 <p>Endpoint rate limit is 60 requests per minute</p>
 
                 <h2>4. Cache lifetime</h2>
-                <p>The content lifetime is <?php echo($cachetimeout); ?> seconds from the last POST request</p>
+                <p>The content lifetime is {{ $cachetimeout }} seconds from the last POST request</p>
 
                 <h3>License</h3>
                 <p>

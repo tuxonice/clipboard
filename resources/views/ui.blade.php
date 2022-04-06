@@ -35,17 +35,17 @@
   <h2>Clipboard - User Interface</h2>
 </div>
             
-            <form action="/<?php echo($hash); ?>" method="post" id="main-form">
-                <p class="help-block">Hash: <?php echo($hash); ?></p>
-				<?php foreach($storedArray as $key => $value) { ?>
+            <form action="/{{ $hash }}" method="post" id="main-form">
+                <p class="help-block">Hash: {{ $hash }}</p>
+				@foreach($storedArray as $key => $value)
                 
                 <div class="form-group">
                     <label for="value-01">Value</label>
-                    <textarea id="value-01" class="form-control" rows="3" name="<?php echo($key); ?>" id="<?php echo($key); ?>"><?php echo($value); ?></textarea>
+                    <textarea id="value-01" class="form-control" rows="3" name="{{ $key  }}" id="{{ $key }}">{{ $value }}</textarea>
                 </div>
                 
                 <hr/>
-                <?php } ?>
+                @endforeach
   
                 <button type="submit" class="btn btn-default">Send</button>
             </form>
